@@ -48,7 +48,7 @@ public class SpendingTracker {
         System.out.println("\n--- FINAL RECEIPT ---");
         for (int i = 0; i < receipt.size(); i++) {
             // Get item from list 1 and price from list 2 using the same index 'i'
-            System.out.println("- " + receipt.get(i) + ": $" + prices.get(i));
+            System.out.println("- " + receipt.get(i) + ": Php" + prices.get(i));
         }
         
         System.out.println("---------------------");
