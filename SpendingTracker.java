@@ -9,50 +9,84 @@ import java.util.ArrayList;
  *
  * @author ACER
  */
-public class SpendingTracker {
-
-    public static void main(String[] args) {
-
+class Expense {
+    private String name;
+    private double price;
+    
+    //Constructor
+    public Expense(String name, double price){
+        this.name = name;
+        this.price = price;
+    }
+    
+    //Getters
+    public String getName(){ return name;}
+    public double getPrice(){return price;}
+}
+public class SpendingTracker{
+    
+    public static void main(String[] args){
+        //User input
         Scanner input = new Scanner(System.in);
         
-        // Two lists: one for names, one for prices
-        ArrayList<String> receipt = new ArrayList<>();
-        ArrayList<Double> prices = new ArrayList<>();
-
-        System.out.print("Enter starting amount: ");
-        double balance = input.nextDouble();
-        input.nextLine(); 
-
-        while (true) {
-            System.out.println("\nCurrent balance: Php " + balance);
-            System.out.print("Enter item name (or type 'done'): ");
-            String item = input.nextLine();
-
-            if (item.equalsIgnoreCase("done")) {
+        //Using ArrayList to store objects
+        ArrayList<Expense> receipt = new ArrayList<>();
+        
+        System.out.println("Enter starting amount: ");
+        double initialBalance = input.nextDouble();
+        input.nextLine();
+        
+        //Using loops
+        //(while loop)
+        while (true){
+            System.out.println("Current Balance: Php " + calculateRemaining(initialBalance, receipt));
+            System.out.println("Enter item name (or type 'done' to end): ");
+            String itemName = input.nextLine();
+            
+            if (itemName.equalsIgnoreCase("done")){
                 break;
             }
-
-            System.out.print("Enter price of " + item + ": ");
-            double price = input.nextDouble();
-            input.nextLine(); 
-
-            // Logic: subtract from balance and save to BOTH lists
-            balance = balance - price;
-            receipt.add(item); 
-            prices.add(price);
-
-            System.out.println(item + " added to cart.");
-        }
-
-        // Final Receipt Section
-        System.out.println("\n--- FINAL RECEIPT ---");
-        for (int i = 0; i < receipt.size(); i++) {
-            // Get item from list 1 and price from list 2 using the same index 'i'
-            System.out.println("- " + receipt.get(i) + ": Php" + prices.get(i));
+            
+            System.out.println("Enter price of " + itemName + ": ");
+            double itemPrice = input.nextDouble();
+            input.nextLine();
+            
+            //Creating an object and adding it to the list
+            receipt.add(new Expense(itemName, itemPrice));
+            System.out.println(itemName + " added to cart.");
         }
         
-        System.out.println("---------------------");
-        System.out.println("Final balance: Php" + balance);
+        displayFinalReceipt(receipt, initialBalance);
+        
         input.close();
+    }
+        //COmputations implemented using methods.
+        //calculates the remaining balance
+    public static double calculateRemaining(double start, ArrayList<Expense>list){
+        double totalSpent = 0;
+        for (Expense e : list){
+            totalSpent += e.getPrice();
+        }
+        return start - totalSpent;
+    }
+    //Computations implemented using methods
+    public static void displayFinalReceipt(ArrayList<Expense>list, double startBalance) {
+        System.out.println("---FINAL RECEIPT---");
+        
+        //Using a loop to iterate throughthe array/List.
+        for (Expense e : list) {
+            System.out.println("- " + e.getName()+ ": Php " + e.getPrice());
+        }
+        
+        double finalBal = calculateRemaining(startBalance, list);
+        System.out.println("---------------------");
+        System.out.println("Final balance: Php " + finalBal);
+        
+        if (finalBal < 0){
+            System.out.println("Warning!: You have exceeded your budget!");
+        }
+        else {
+            System.out.println("Budget status: Within limits.");
+        }
     }
 }
