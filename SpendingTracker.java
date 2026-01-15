@@ -52,7 +52,7 @@ public class SpendingTracker {
         }
         
         System.out.println("---------------------");
-        System.out.println("Final balance: $" + balance);
+        System.out.println("Final balance: Php" + balance);
         input.close();
     }
 }
